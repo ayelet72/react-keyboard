@@ -1,0 +1,14 @@
+
+  
+  .text-display {
+    direction: rtl; 
+    unicode-bidi: plaintext; 
+    white-space: pre-wrap;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    min-height: 150px;
+    background-color: #fff;
+    text-align: right;
+  }
+  
+  

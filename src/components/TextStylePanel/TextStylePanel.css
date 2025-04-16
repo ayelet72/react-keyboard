@@ -1,0 +1,20 @@
+.style-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.style-buttons button,
+.apply-toggle button {
+  margin: 0.2rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ccc;
+  background-color: #f4f4f4;
+  cursor: pointer;
+}
+
+button.active,
+.apply-toggle button:hover {
+  background-color: #d0e6ff;
+  border-color: #3399ff;
+}
