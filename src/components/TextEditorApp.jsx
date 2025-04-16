@@ -110,10 +110,12 @@ function TextEditorApp() {
           onReplaceChar={handleReplaceChar}
         />
 
-        <VirtualKeyboard
+        <div className="keyboardpace" >
+          <VirtualKeyboard
           onKeyPress={handleKey}
           onDelete={handleDelete}
-        />
+        /></div>
+
 
         <TextStylePanel
           onStyleChange={handleStyleChange}
