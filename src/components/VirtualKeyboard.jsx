@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./keyboard.css"
 
 function VirtualKeyboard({ onKeyPress, onDelete }) {
   const [showSymbols, setShowSymbols] = useState(false);

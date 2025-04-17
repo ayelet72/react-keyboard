@@ -10,15 +10,15 @@
   .action-raw3 button{
     margin: 0.2rem;
     padding: 0.4rem 0.8rem;
-    border: 1px solid #ccc;
-    background-color: #f4f4f4;
+    border: 0.5px solid #0b5134;
+    background-color: #5adfa6;
     cursor: pointer;
   }
   
   .action-raw1 button:hover,
   .action-raw2 button:hover,
   .action-raw3 button:hover{
-    background-color: #d0e6ff;
-    border-color: #3399ff;
+    background-color: #aeefd6;
+    border-color: #0b5134;
   }
   

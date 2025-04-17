@@ -9,12 +9,19 @@
   margin: 0.2rem;
   padding: 0.4rem 0.8rem;
   border: 1px solid #a09898;
-  background-color: #455fc8;
+  background-color: #9bbfe5;
   cursor: pointer;
+  border-radius: 3px;
+  
 }
 
 button.active,
 .apply-toggle button:hover {
   background-color: #d0e6ff;
   border-color: #3399ff;
+}
+
+select{
+  background-color: #97c7ec
+
 }

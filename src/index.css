@@ -47,12 +47,12 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #e8d5d5;
+  background-color:#bfeaff;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  background-color: #dcafaf;
+  background-color: #5652b6;
 }
 
 

@@ -102,19 +102,23 @@ function TextEditorApp() {
       <TextDisplay text={text} styleSpans={styleSpans} />
 
       <div className="editor-area flex">
-        <TextActionsPanel
+        <div className="Action-erea">
+          <TextActionsPanel
           onDeleteWord={handleDeleteWord}
           onClearText={handleClearText}
           onUndo={handleUndo}
           onSearchChar={handleSearchChar}
           onReplaceChar={handleReplaceChar}
         />
+        </div>
+        
 
-        <div className="keyboardpace" >
+        <div className="keyboard-erea" >
           <VirtualKeyboard
           onKeyPress={handleKey}
           onDelete={handleDelete}
-        /></div>
+        />
+        </div>
 
 
         <TextStylePanel
