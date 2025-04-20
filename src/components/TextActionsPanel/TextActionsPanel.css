@@ -22,6 +22,7 @@
     border-color: #0b5134;
   }
 
+<<<<<<< HEAD
   .action-raw1{
     
 
@@ -30,4 +31,12 @@
     margin: 5px;
 
   }
+=======
+  button.active {
+    background-color: #ffe066; /* צהוב עדין */
+    border: 1px solid #ffcc00;
+    font-weight: bold;
+  }
+  
+>>>>>>> cac24e4f13ef1de412e94af185c4387b770e8f7e
   
