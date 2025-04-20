@@ -2,7 +2,7 @@ import React from "react";
 import "./TextStylePanel.css";
 
 const fontOptions = ["Arial", "Times New Roman", "David", "Courier New", "Verdana", "Tahoma"];
-const fontSizes = ["12px", "14px", "16px", "18px", "20px", "24px", "32px"];
+const fontSizes = ["12px", "14px", "16px", "18px", "20px", "24px", "32px","36px","40px","44px","48px"];
 
 function TextStylePanel({ onStyleChange, onApplyAll, currentStyle }) {
   return (
