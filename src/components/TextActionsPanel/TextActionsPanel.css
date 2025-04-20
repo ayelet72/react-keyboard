@@ -21,4 +21,11 @@
     background-color: #aeefd6;
     border-color: #0b5134;
   }
+
+  button.active {
+    background-color: #ffe066; /* צהוב עדין */
+    border: 1px solid #ffcc00;
+    font-weight: bold;
+  }
+  
   

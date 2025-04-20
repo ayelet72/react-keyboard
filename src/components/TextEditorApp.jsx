@@ -12,6 +12,8 @@ function TextEditorApp() {
     color: "#000000",
   });
   const [styleSpans, setStyleSpans] = useState([]);
+  const [searchChar, setSearchChar] = useState(null);
+
 
   //תיקון טווחי עיצוב לאחר שינוי
   const adjustStyleSpansAfterTextChange = (newLength) => {
@@ -29,6 +31,10 @@ function TextEditorApp() {
   };
 
   const handleKey = (char) => {
+    if (searchChar !== null) {
+      setSearchChar(null);
+    }
+
     const start = text.length;
     const end = start + 1;
     setText((prev) => prev + char);
@@ -49,6 +55,9 @@ function TextEditorApp() {
   };
 
   const handleDelete = () => {
+    if (searchChar !== null) {
+      setSearchChar(null);
+    }
     const newLength = text.length - 1;
     setText((prev) => prev.slice(0, -1));
     adjustStyleSpansAfterTextChange(newLength);
@@ -82,14 +91,16 @@ function TextEditorApp() {
   };
 
   const handleSearchChar = (char) => {
-    if (!char) return;
-    const index = text.indexOf(char);
-    if (index === -1) {
-      alert(`התו "${char}" לא נמצא`);
-    } else {
-      alert(`התו "${char}" מופיע במיקום ${index}`);
+
+    if (char!=null &&!text.includes(char)) {
+      alert(`התו "${char}" לא נמצא בטקסט`);
+      return;
     }
+
+    setSearchChar(char);
   };
+
+
 
   const handleReplaceChar = (oldChar, newChar) => {
     if (!oldChar || !newChar) return;
@@ -99,25 +110,26 @@ function TextEditorApp() {
 
   return (
     <div>
-      <TextDisplay text={text} styleSpans={styleSpans} />
+      <TextDisplay text={text} styleSpans={styleSpans} searchChar={searchChar} />
 
       <div className="editor-area flex">
         <div className="Action-erea">
           <TextActionsPanel
-          onDeleteWord={handleDeleteWord}
-          onClearText={handleClearText}
-          onUndo={handleUndo}
-          onSearchChar={handleSearchChar}
-          onReplaceChar={handleReplaceChar}
-        />
+            onDeleteWord={handleDeleteWord}
+            onClearText={handleClearText}
+            onUndo={handleUndo}
+            onSearchChar={handleSearchChar}
+            onReplaceChar={handleReplaceChar}
+            searchChar={searchChar}
+          />
         </div>
-        
+
 
         <div className="keyboard-erea" >
           <VirtualKeyboard
-          onKeyPress={handleKey}
-          onDelete={handleDelete}
-        />
+            onKeyPress={handleKey}
+            onDelete={handleDelete}
+          />
         </div>
 
 
