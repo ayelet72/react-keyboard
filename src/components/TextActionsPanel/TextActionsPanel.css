@@ -15,10 +15,19 @@
     cursor: pointer;
   }
   
-  .action-raw1 button:hover,
+  .action-raw1 button:hover
   .action-raw2 button:hover,
   .action-raw3 button:hover{
     background-color: #aeefd6;
     border-color: #0b5134;
+  }
+
+  .action-raw1{
+    
+
+  }
+  .action-raw2{
+    margin: 5px;
+
   }
   

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import TextDisplay from "./TextDisplay/TextDisplay";
 import TextStylePanel from "./TextStylePanel/TextStylePanel";
-import VirtualKeyboard from "./VirtualKeyboard";
+import VirtualKeyboard from "./Keyboard/VirtualKeyboard";
 import TextActionsPanel from "./TextActionsPanel/TextActionsPanel";
 
 function TextEditorApp() {
