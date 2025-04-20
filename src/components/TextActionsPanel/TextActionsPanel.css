@@ -21,18 +21,18 @@
     background-color: #aeefd6;
     border-color: #0b5134;
   }
-
+/* 
   .action-raw1{
     
 
-  }
+  } */
   .action-raw2{
     padding-left: 75px;
     margin: 10px;
 
   }
   button.active {
-    background-color: #fbe58c; /* צהוב עדין */
+    background-color: #fbe58c; 
     border: 3px solid #ffcc00;
     font-weight: bold;
   }

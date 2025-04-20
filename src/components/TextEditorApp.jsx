@@ -3,6 +3,8 @@ import TextDisplay from "./TextDisplay/TextDisplay";
 import TextStylePanel from "./TextStylePanel/TextStylePanel";
 import VirtualKeyboard from "./Keyboard/VirtualKeyboard";
 import TextActionsPanel from "./TextActionsPanel/TextActionsPanel";
+import TextFileManager from "./TextFileManager"
+import "./TextEditor.css"
 
 function TextEditorApp() {
   const [text, setText] = useState("");
@@ -92,6 +94,7 @@ function TextEditorApp() {
     });
   };
 
+  //טיפול במחיקת הכל
   const handleDelete = () => {
     pushToHistory();
 
@@ -189,10 +192,35 @@ function TextEditorApp() {
     setText(updatedText);
   };
 
+  // טיפול בשמירה כקובץ - חלק ב
+  const handleSave = (fileName) => {
+    const fileData = {
+      text,
+      styleSpans,
+    };
+    localStorage.setItem(fileName, JSON.stringify(fileData));
+    alert("הקובץ נשמר בהצלחה ");
+  };
+  
+  const handleLoad = (fileName) => {
+    const data = localStorage.getItem(fileName);
+    if (data) {
+      const parsed = JSON.parse(data);
+      setText(parsed.text);
+      setStyleSpans(parsed.styleSpans || []);
+      alert("הקובץ נטען בהצלחה 📂✅");
+    } else {
+      alert("הקובץ לא נמצא ");
+    }
+  };
+  
   return (
     <div>
-      <TextDisplay text={text} styleSpans={styleSpans} searchChar={searchChar} />
-
+      <div div className="text-erea">
+        <TextDisplay text={text} styleSpans={styleSpans} searchChar={searchChar} />
+        <TextFileManager onSave={handleSave} onLoad={handleLoad} />
+      </div>
+      
       <div className="editor-area flex">
         <div className="Action-erea">
           <TextActionsPanel

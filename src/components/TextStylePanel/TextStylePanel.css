@@ -22,7 +22,8 @@ button.active,
 }
 
 select{
-  background-color: #0b63a6;
-  border-radius: 3px;
+  background-color: #244055;
+  border-radius: 4px;
+  height: 28px;
 
 }
