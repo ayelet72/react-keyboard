@@ -27,7 +27,7 @@ function TextActionsPanel({
             const val = e.target.value;
             onSearchChar(val.length === 0 ? null : val);
           }}
-        />
+        />  
       </div>
 
       <div className="action-raw3 flex">

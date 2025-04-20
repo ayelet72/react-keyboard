@@ -15,28 +15,26 @@
     cursor: pointer;
   }
   
-  .action-raw1 button:hover
+  .action-raw1 button:hover,
   .action-raw2 button:hover,
   .action-raw3 button:hover{
     background-color: #aeefd6;
     border-color: #0b5134;
   }
 
-<<<<<<< HEAD
   .action-raw1{
     
 
   }
   .action-raw2{
-    margin: 5px;
+    padding-left: 75px;
+    margin: 10px;
 
   }
-=======
   button.active {
-    background-color: #ffe066; /* צהוב עדין */
-    border: 1px solid #ffcc00;
+    background-color: #fbe58c; /* צהוב עדין */
+    border: 3px solid #ffcc00;
     font-weight: bold;
   }
   
->>>>>>> cac24e4f13ef1de412e94af185c4387b770e8f7e
   
