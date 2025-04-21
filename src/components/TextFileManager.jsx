@@ -12,15 +12,24 @@ function TextFileManager({onSave, onLoad } ){
     }, []);
 
     const handleSave = () => {
-        if (!fileName) {
-          alert("יש להזין שם קובץ קודם");
-          return;
+        let nameToSave = fileName;
+        
+        if (!nameToSave) {
+            nameToSave = prompt("הכניסי שם לקובץ:");
+            if (!nameToSave) {
+            alert("שמירה בוטלה – אין שם קובץ");
+            return;
+            }
+            setFileName(nameToSave);
         }
-        onSave(fileName);
-        if (!savedFiles.includes(fileName)) {
-          setSavedFiles((prev) => [...prev, fileName]);
+        
+        onSave(nameToSave);
+        
+        if (!savedFiles.includes(nameToSave)) {
+            setSavedFiles((prev) => [...prev, nameToSave]);
         }
-      };
+    };
+      
     
     const handleLoad = () => {
     if (!fileName) {
@@ -33,12 +42,12 @@ function TextFileManager({onSave, onLoad } ){
     return (
     <div className="file-manager">
         <h3>  שמירה / פתיחת קובץ  </h3>
-        <input
+        {/* <input
         type="text"
         placeholder="שם קובץ"
         value={fileName}
         onChange={(e) => setFileName(e.target.value)}
-        />
+        /> */}
 
         <div className="file-buttons">
         <button onClick={handleSave}>💾 שמור</button>
@@ -48,7 +57,7 @@ function TextFileManager({onSave, onLoad } ){
         {savedFiles.length > 0 && (
         <div className="saved-files">
             <label>בחר קובץ קיים:</label>
-            <select onChange={(e) => setFileName(e.target.value)} value={fileName}>
+            <select onChange={(e) => setFileName(e.target.value)} value={fileName} >
             <option value="">-- קבצים שמורים --</option>
             {savedFiles.map((name) => (
                 <option key={name} value={name}>
