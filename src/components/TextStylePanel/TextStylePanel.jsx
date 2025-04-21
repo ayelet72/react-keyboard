@@ -13,7 +13,6 @@ function TextStylePanel({ onStyleChange, onApplyAll, currentStyle }) {
             <option key={font} value={font}>{font}</option>
           ))}
         </select>
-        :גופן
       </label>
 
       <label>
@@ -22,7 +21,6 @@ function TextStylePanel({ onStyleChange, onApplyAll, currentStyle }) {
             <option key={size} value={size}>{parseInt(size)}</option>
           ))}
         </select>
-        :גודל
       </label>
 
       <label>
@@ -30,7 +28,6 @@ function TextStylePanel({ onStyleChange, onApplyAll, currentStyle }) {
           type="color"
           onChange={(e) => onStyleChange("color", e.target.value)}
         />
-        :צבע
       </label>
 
       <div className="style-buttons">

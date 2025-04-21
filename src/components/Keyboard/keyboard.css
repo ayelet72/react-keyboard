@@ -1,11 +1,23 @@
 .keys-holder button {
     box-shadow:4px 3px 2px rgba(0, 0, 0, 0.2);
-    color: rgb(0, 0, 0);
     border-color: black;
-    
+    background-color: rgb(141, 223, 250);
+    padding: 0.4em 0.8em;
 }
 
+.keys-holder button:hover{
+    background-color: rgb(219, 246, 255);
+    box-shadow:4px 3px 2px rgba(0, 0, 0, 0.42);
 
-/* .key-button{
+}
+
+.keys-holder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    /* ממרכז את כל השורות לרוחב */
+    justify-content: center;
+    height: 100%;           /* חשוב כדי ליישר אנכית גם */
+  }
   
-} */
+
+

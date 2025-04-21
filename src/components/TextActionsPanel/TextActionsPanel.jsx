@@ -12,7 +12,6 @@ function TextActionsPanel({
   return (
     <div className="actions-panel">
       <div className="action-raw1 flex">
-        <button onClick={onUndo}>↩️</button>
         <button onClick={onDeleteWord}>מחק מילה</button>
         <button onClick={onClearText}>מחק הכל</button>
       </div>
@@ -27,7 +26,7 @@ function TextActionsPanel({
             const val = e.target.value;
             onSearchChar(val.length === 0 ? null : val);
           }}
-        />  
+        />
       </div>
 
       <div className="action-raw3 flex">
@@ -38,10 +37,12 @@ function TextActionsPanel({
         }}>
           החלף
         </button>
-        <div>
-          <input type="text" placeholder="ישן" maxLength={1} id="oldChar" />
-          <input type="text" placeholder="חדש" maxLength={1} id="newChar" />
-        </div>
+        <input type="text" placeholder="ישן" maxLength={1} id="oldChar" />
+        <input type="text" placeholder="חדש" maxLength={1} id="newChar" />
+
+      </div>
+      <div className="action-raw4">
+        <button className="undo-button" onClick={onUndo}>↩️</button>
       </div>
     </div>
   );

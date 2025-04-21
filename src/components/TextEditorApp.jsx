@@ -215,7 +215,7 @@ function TextEditorApp() {
   };
   
   return (
-    <div>
+    <div className='editor-page'>
       <div div className="text-erea">
         <TextDisplay text={text} styleSpans={styleSpans} searchChar={searchChar} />
         <TextFileManager onSave={handleSave} onLoad={handleLoad} />
