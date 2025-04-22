@@ -23,14 +23,16 @@
   left: 0;
   right: 0;
 
+  
   display: flex;
   justify-content: center; /* שינוי! מרכז את כל התוכן */
   gap: 1rem;
   padding: 10px 15px;
   height: 45vh;
-  background: white;
+  background: rgb(220, 217, 217);
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   z-index: 100;
+  align-items: center;
 }
 
 .Action-erea,
@@ -68,3 +70,44 @@
   min-width: 0;          
   height: 100%;
 } */
+
+
+/* .editor-wrapper.two-editors {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+}
+
+.editor-wrapper.three-editors {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
+}
+
+.editor-wrapper.four-editors {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+} */
+
+.text-erea {
+  flex: 1;
+  overflow: auto;
+  font-size: 14px;
+  padding: 0.5rem;
+}
+
+.page-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+.editor-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  height: calc(100vh - 45vh); /* משאיר מקום לתחתית */
+  box-sizing: border-box;
+  overflow: auto;
+}

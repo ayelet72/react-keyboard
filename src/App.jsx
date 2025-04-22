@@ -1,9 +1,9 @@
-import TextEditorApp from "./components/TextEditorApp";
+import MultiTextEditorApp from "./components/MultiTextEditorApp";
 
 function App() {
   return (
     <div className="app">
-      <TextEditorApp />
+      <MultiTextEditorApp />
     </div>
   );
 }
