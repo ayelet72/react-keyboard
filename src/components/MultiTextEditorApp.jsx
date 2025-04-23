@@ -8,15 +8,26 @@ import TextFileManager from "./TextFileManager";
 import "./TextEditor.css";
 
 let nextId = 1;
+const firstEditor = createNewEditor("קובץ 1");
+
 
 function MultiTextEditorApp() {
   // DATA
-  const [editors, setEditors] = useState([createNewEditor("קובץ 1")]);
+  const [editors, setEditors] = useState([firstEditor]);
+  //which one we are editing now 
+  const [activeEditorId, setActiveEditorId] = useState(firstEditor.id); 
 
   // HELPERS
   const updateEditor = (id, updates) => {
     setEditors(prev => prev.map(e => e.id === id ? { ...e, ...updates } : e));
   };
+
+  // //the active erea is set only when there are editors:
+  // React.useEffect(() => {
+  //   if (editors.length > 0 && activeEditorId === null) {
+  //     setActiveEditorId(editors[0].id);
+  //   }
+  // }, [editors, activeEditorId]);
 
   const pushToHistory = (id) => {
     setEditors((prev) =>
@@ -153,7 +164,7 @@ function MultiTextEditorApp() {
         text: parsed.text,
         styleSpans: parsed.styleSpans || [],
       });
-      alert("הקובץ נטען בהצלחה 📂✅");
+      alert("הקובץ נטען בהצלחה ");
     } else {
       alert("הקובץ לא נמצא");
     }
@@ -161,8 +172,34 @@ function MultiTextEditorApp() {
 
   const addNewEditor = () => {
     if (editors.length >= 4) return;
-    setEditors((prev) => [...prev, createNewEditor(`קובץ ${prev.length + 1}`)]);
+    const newEditor = createNewEditor(`קובץ ${editors.length + 1}`);
+    setEditors(prev => [...prev, newEditor]);
   };
+
+  const handleCloseEditor = (id) => {
+    const fileName = prompt("האם לשמור את הקובץ לפני הסגירה? הכנס/י שם קובץ או בטל:");
+    if (fileName === null) return; // ביטול
+    if (fileName.trim() !== "") {
+      handleSave(id, fileName.trim());
+    }
+  
+    setEditors(prev => {
+      const filtered = prev.filter(e => e.id !== id);
+      const renamed = filtered.map((editor, index) => ({
+        ...editor,
+        name: `קובץ ${index + 1}`
+      }));
+  
+      // עדכון activeEditorId אם צריך
+      if (id === activeEditorId) {
+        setActiveEditorId(renamed.length > 0 ? renamed[0].id : null);
+      }
+  
+      return renamed;
+    });
+  };
+  
+  
 
   // RENDER
   return (
@@ -172,47 +209,69 @@ function MultiTextEditorApp() {
           ➕ הוסף אזור עריכה
         </button>
       )}
-      
-      <div className="editor-container">
+  
+      {/* הצגת כל העורכים */}
+      <div className={`editor-container ${classNameByCount(editors.length)}`}>
         {editors.map((editor) => (
-          <div key={editor.id} className="editor-box">
+          
+          <div
+            key={editor.id}
+            className={`editor-box ${editor.id === activeEditorId ? "active-editor" : ""}`}
+            onClick={() => setActiveEditorId(editor.id)}
+          >
+            <button className="close-editor-btn"
+              onClick={(e) => {
+                e.stopPropagation(); // מונע לחיצה כפולה שגורמת לשינוי active
+                handleCloseEditor(editor.id);
+              }}
+            > ❌ </button>
+            <h3>{editor.name} {editor.id === activeEditorId && "🟢 פעיל"}</h3>
             <div className="text-erea">
-              <TextDisplay text={editor.text} styleSpans={editor.styleSpans} searchChar={editor.searchChar} />
+              <TextDisplay
+                text={editor.text}
+                styleSpans={editor.styleSpans}
+                searchChar={editor.searchChar}
+              />
               <TextFileManager
                 onSave={(fileName) => handleSave(editor.id, fileName)}
                 onLoad={(fileName) => handleLoad(editor.id, fileName)}
               />
             </div>
-
-            <div className="editor-area">
-              <div className="Action-erea">
-                <TextActionsPanel
-                  onDeleteWord={() => handleDeleteWord(editor.id)}
-                  onClearText={() => handleClearText(editor.id)}
-                  onUndo={() => handleUndo(editor.id)}
-                  onSearchChar={(char) => handleSearchChar(editor.id, char)}
-                  onReplaceChar={(o, n) => handleReplaceChar(editor.id, o, n)}
-                  searchChar={editor.searchChar}
-                />
-              </div>
-              <div className="keyboard-erea">
-                <VirtualKeyboard
-                  onKeyPress={(char) => handleKey(editor.id, char)}
-                  onDelete={() => handleDelete(editor.id)}
-                />
-              </div>
-              <TextStylePanel
-                onStyleChange={(k, v) => handleStyleChange(editor.id, k, v)}
-                onApplyAll={() => handleApplyAll(editor.id)}
-                currentStyle={editor.currentStyle}
-              />
-            </div>
           </div>
         ))}
       </div>
-      
+  
+      {/* פאנל כלים גלובלי לעורך הפעיל בלבד */}
+      {activeEditorId && (
+        <div className="editor-area">
+  
+          <div className="Action-erea">
+            <TextActionsPanel
+              onDeleteWord={() => handleDeleteWord(activeEditorId)}
+              onClearText={() => handleClearText(activeEditorId)}
+              onUndo={() => handleUndo(activeEditorId)}
+              onSearchChar={(char) => handleSearchChar(activeEditorId, char)}
+              onReplaceChar={(o, n) => handleReplaceChar(activeEditorId, o, n)}
+              searchChar={editors.find(e => e.id === activeEditorId)?.searchChar}
+            />
+          </div>
+  
+          <div className="keyboard-erea">
+            <VirtualKeyboard
+              onKeyPress={(char) => handleKey(activeEditorId, char)}
+              onDelete={() => handleDelete(activeEditorId)}
+            />
+          </div>
+  
+          <TextStylePanel
+            onStyleChange={(k, v) => handleStyleChange(activeEditorId, k, v)}
+            onApplyAll={() => handleApplyAll(activeEditorId)}
+            currentStyle={editors.find(e => e.id === activeEditorId)?.currentStyle}
+          />
+        </div>
+      )}
     </div>
-  );
+  );  
 }
 
 function createNewEditor(name) {

@@ -8,12 +8,11 @@
 .text-erea {
   flex: 1;
   /* תופס את כל השטח שנשאר מלמעלה */
-  overflow-y: auto;
+  /* overflow-y: auto; */
   /* מוסיף גלילה אם יש הרבה טקסט */
   padding: 1rem;
   /* ריווח פנימי (נעים בעין) */
-  margin-bottom: 45vh;
-  /* מרווח בגובה של אזור המקלדת, כדי שלא יכסה את הטקסט */
+ 
 }
 
 
@@ -48,50 +47,13 @@
   justify-content: center;
 }
 
-
-/* @media screen and (max-width: 768px) {
-    .editor-area {
-      flex-direction:row;
-      align-items: stretch;
-    }
-  
-    .Action-erea,
-    .keyboard-erea,
-    .style-panel {
-      width: 100%;
-      width: 60px ;
-    }
-} */
-
-/* .Action-erea,
-.keyboard-erea,
-.style-panel {
-  flex: 1 1 0;           
-  min-width: 0;          
-  height: 100%;
-} */
-
-
-/* .editor-wrapper.two-editors {
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 1fr;
-}
-
-.editor-wrapper.three-editors {
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 1fr;
-}
-
-.editor-wrapper.four-editors {
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-} */
-
 .text-erea {
   flex: 1;
   overflow: auto;
   font-size: 14px;
   padding: 0.5rem;
+  height: auto;
+  max-height: 320px;
 }
 
 .page-layout {
@@ -109,5 +71,52 @@
   padding: 1rem;
   height: calc(100vh - 45vh); /* משאיר מקום לתחתית */
   box-sizing: border-box;
-  overflow: auto;
+  overflow: hidden;
+  height: auto;
+  max-height: 320px;
+
+}
+
+h3{
+  margin: 0px;
+}
+
+.active-editor {
+  border: 0.5px solid #7cdfec;
+  height: auto;
+  max-height: 330px;
+  box-shadow: 0 0 10px #a9dae1;
+  background-color: #f0faff;
+}
+
+.active-editor.editor-box {
+  height: auto;
+  max-height: 320px;
+
+}
+.editor-page{
+  overflow: hidden;
+  height: auto;
+  max-height: 370px;
+}
+
+.close-editor-btn {
+  position: absolute;
+  top:0.2rem;
+  left: 0.2rem;
+  background: none;
+  background-color: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0%;
+  line-height: 1;
+  
+}
+.editor-box {
+  position: relative; /* כדי שהכפתור יהיה בפנים */
+}
+.close-editor-btn button:hover{
+  background-color: #cacaca;
+
 }
