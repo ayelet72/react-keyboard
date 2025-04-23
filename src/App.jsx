@@ -1,9 +1,10 @@
-import MultiTextEditorApp from "./components/MultiTextEditorApp";
+// App.jsx
+import UserAppManager from "./components/UserAppManager";
 
 function App() {
   return (
     <div className="app">
-      <MultiTextEditorApp />
+      <UserAppManager />
     </div>
   );
 }
