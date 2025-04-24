@@ -63,7 +63,11 @@ function TextDisplay({ text, styleSpans, searchChar }) {
     });
   }
 
-  return <div className="text-display">{elements}</div>;
+  return (
+    <div className="text-wrapper">
+      <div className="text-display">{elements}</div>
+    </div>
+  );
 }
 
 

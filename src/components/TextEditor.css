@@ -5,16 +5,17 @@
 }
 
 
-.text-erea {
-  flex: 1;
-  /* תופס את כל השטח שנשאר מלמעלה */
-  /* overflow-y: auto; */
-  /* מוסיף גלילה אם יש הרבה טקסט */
-  padding: 1rem;
-  /* ריווח פנימי (נעים בעין) */
- 
-}
 
+.text-display {
+  width: 100%;
+  max-height: 230px;
+  padding: 0.5rem;
+  border-color: #ffffff;
+  overflow-y: auto;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
 
 .editor-area {
   position: fixed;
@@ -48,12 +49,14 @@
 }
 
 .text-erea {
-  flex: 1;
-  overflow: auto;
-  font-size: 14px;
+  width: 100%;
   padding: 0.5rem;
-  height: auto;
-  max-height: 320px;
+  box-sizing: border-box;
+  overflow: hidden;
+  max-height: 200px;          
+  max-height: none;  
+  flex: 1;
+  padding: 1rem;    
 }
 
 .page-layout {
@@ -115,6 +118,8 @@ h3{
 }
 .editor-box {
   position: relative; /* כדי שהכפתור יהיה בפנים */
+
+ 
 }
 .close-editor-btn button:hover{
   background-color: #cbcbcb;
