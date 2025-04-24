@@ -125,3 +125,39 @@ h3{
   background-color: #cbcbcb;
 
 }
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f4f4f4;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #ccc;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  width: 100vw;
+
+}
+
+.logout-btn {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #c9302c;
+}
+
+.greeting {
+  font-weight: bold;
+}
+
+
+.add-editor-btn{
+  max-width: 300px;
+  margin: auto;
+}

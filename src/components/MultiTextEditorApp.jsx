@@ -11,11 +11,11 @@ let nextId = 1;
 const firstEditor = createNewEditor("קובץ 1");
 
 
-function MultiTextEditorApp() {
+function MultiTextEditorApp({ currentUser, onLogout }) {
   // DATA
   const [editors, setEditors] = useState([firstEditor]);
   //which one we are editing now 
-  const [activeEditorId, setActiveEditorId] = useState(firstEditor.id); 
+  const [activeEditorId, setActiveEditorId] = useState(firstEditor.id);
 
   // HELPERS
   const updateEditor = (id, updates) => {
@@ -34,17 +34,17 @@ function MultiTextEditorApp() {
       prev.map((e) =>
         e.id === id
           ? {
-              ...e,
-              history: [
-                ...e.history.slice(-49),
-                {
-                  text: e.text,
-                  styleSpans: e.styleSpans,
-                  currentStyle: e.currentStyle,
-                  searchChar: e.searchChar,
-                },
-              ],
-            }
+            ...e,
+            history: [
+              ...e.history.slice(-49),
+              {
+                text: e.text,
+                styleSpans: e.styleSpans,
+                currentStyle: e.currentStyle,
+                searchChar: e.searchChar,
+              },
+            ],
+          }
           : e
       )
     );
@@ -150,25 +150,44 @@ function MultiTextEditorApp() {
   };
 
   const handleSave = (id, fileName) => {
+    console.log("שמירת קובץ");
     const editor = editors.find(e => e.id === id);
     const fileData = { text: editor.text, styleSpans: editor.styleSpans };
-    localStorage.setItem(fileName, JSON.stringify(fileData));
+
+    const allFiles = JSON.parse(localStorage.getItem("my_text_editor_files") || "[]");
+
+    const updatedFiles = allFiles.filter(file =>
+      !(file.ownerId === currentUser.id && file.name === fileName)
+    );
+
+    console.log(fileData);
+
+    updatedFiles.push({
+      name: fileName,
+      ownerId: currentUser.id,
+      data: fileData,
+    });
+
+    localStorage.setItem("my_text_editor_files", JSON.stringify(updatedFiles));
     alert("הקובץ נשמר בהצלחה");
   };
 
+
   const handleLoad = (id, fileName) => {
-    const data = localStorage.getItem(fileName);
-    if (data) {
-      const parsed = JSON.parse(data);
+    const allFiles = JSON.parse(localStorage.getItem("my_text_editor_files") || "[]");
+    const file = allFiles.find(file => file.ownerId === currentUser.id && file.name === fileName);
+
+    if (file) {
       updateEditor(id, {
-        text: parsed.text,
-        styleSpans: parsed.styleSpans || [],
+        text: file.data.text,
+        styleSpans: file.data.styleSpans || [],
       });
-      alert("הקובץ נטען בהצלחה ");
+      alert("הקובץ נטען בהצלחה");
     } else {
-      alert("הקובץ לא נמצא");
+      alert("הקובץ לא נמצא או שאינו שייך למשתמש הנוכחי");
     }
   };
+
 
   const addNewEditor = () => {
     if (editors.length >= 4) return;
@@ -182,38 +201,43 @@ function MultiTextEditorApp() {
     if (fileName.trim() !== "") {
       handleSave(id, fileName.trim());
     }
-  
+
     setEditors(prev => {
       const filtered = prev.filter(e => e.id !== id);
       const renamed = filtered.map((editor, index) => ({
         ...editor,
         name: `קובץ ${index + 1}`
       }));
-  
+
       // עדכון activeEditorId אם צריך
       if (id === activeEditorId) {
         setActiveEditorId(renamed.length > 0 ? renamed[0].id : null);
       }
-  
+
       return renamed;
     });
   };
-  
-  
+
+
 
   // RENDER
   return (
     <div className='editor-page'>
+      <div className="editor-header">
+        <button className="logout-btn" onClick={onLogout}> התנתק</button>
+        <span className="greeting">שלום, {currentUser.username}</span>
+      </div>
+
       {editors.length < 4 && (
         <button className="add-editor-btn" onClick={addNewEditor}>
           ➕ הוסף אזור עריכה
         </button>
       )}
-  
+
       {/* הצגת כל העורכים */}
       <div className={`editor-container ${classNameByCount(editors.length)}`}>
         {editors.map((editor) => (
-          
+
           <div
             key={editor.id}
             className={`editor-box ${editor.id === activeEditorId ? "active-editor" : ""}`}
@@ -233,18 +257,27 @@ function MultiTextEditorApp() {
                 searchChar={editor.searchChar}
               />
               <TextFileManager
-                onSave={(fileName) => handleSave(editor.id, fileName)}
-                onLoad={(fileName) => handleLoad(editor.id, fileName)}
+                currentUserId={currentUser.id}
+                onSave={() => ({
+                  text: editor.text,
+                  styleSpans: editor.styleSpans
+                })}
+                onLoad={(data) => updateEditor(editor.id, {
+                  text: data.text,
+                  styleSpans: data.styleSpans || []
+                })}
               />
+
+
             </div>
           </div>
         ))}
       </div>
-  
+
       {/* פאנל כלים גלובלי לעורך הפעיל בלבד */}
       {activeEditorId && (
         <div className="editor-area">
-  
+
           <div className="Action-erea">
             <TextActionsPanel
               onDeleteWord={() => handleDeleteWord(activeEditorId)}
@@ -255,14 +288,14 @@ function MultiTextEditorApp() {
               searchChar={editors.find(e => e.id === activeEditorId)?.searchChar}
             />
           </div>
-  
+
           <div className="keyboard-erea">
             <VirtualKeyboard
               onKeyPress={(char) => handleKey(activeEditorId, char)}
               onDelete={() => handleDelete(activeEditorId)}
             />
           </div>
-  
+
           <TextStylePanel
             onStyleChange={(k, v) => handleStyleChange(activeEditorId, k, v)}
             onApplyAll={() => handleApplyAll(activeEditorId)}
@@ -271,7 +304,7 @@ function MultiTextEditorApp() {
         </div>
       )}
     </div>
-  );  
+  );
 }
 
 function createNewEditor(name) {

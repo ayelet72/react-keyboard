@@ -1,74 +1,82 @@
-import React,{ useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
+function TextFileManager({ onSave, onLoad, currentUserId }) {
+  const [fileName, setFileName] = useState("");
+  const [savedFiles, setSavedFiles] = useState([]);
 
-function TextFileManager({onSave, onLoad } ){
-    const [fileName, setFileName] = useState("");
-    const [savedFiles, setSavedFiles] = useState([]);
+  // טען רק את הקבצים של המשתמש הנוכחי
+  useEffect(() => {
+    const allFiles = JSON.parse(localStorage.getItem("my_text_editor_files") || "[]");
+    const userFiles = allFiles.filter(file => file.ownerId === currentUserId);
+    setSavedFiles(userFiles);
+  }, [currentUserId]);
 
-    // טען את רשימת הקבצים הקיימים ב-localStorage
-    useEffect(() => {
-        const files = Object.keys(localStorage);
-        setSavedFiles(files);
-    }, []);
-
-    const handleSave = () => {
-        let nameToSave = fileName;
-        
-        if (!nameToSave) {
-            nameToSave = prompt("הכניסי שם לקובץ:");
-            if (!nameToSave) {
-            alert("שמירה בוטלה – אין שם קובץ");
-            return;
-            }
-            setFileName(nameToSave);
-        }
-        
-        onSave(nameToSave);
-        
-        if (!savedFiles.includes(nameToSave)) {
-            setSavedFiles((prev) => [...prev, nameToSave]);
-        }
-    };
-      
-    
-    const handleLoad = () => {
-    if (!fileName) {
-        alert("יש לבחור קובץ לטעינה");
-        return;
+  // שמירה
+  const handleSave = () => {
+    let nameToSave = fileName;
+    if (!nameToSave) {
+      nameToSave = prompt("הכניסי שם לקובץ:");
+      if (!nameToSave) return;
+      setFileName(nameToSave);
     }
-    onLoad(fileName);
+
+    const allFiles = JSON.parse(localStorage.getItem("my_text_editor_files") || "[]");
+
+    // הסרה של קובץ ישן בשם הזה (אם קיים)
+    const updatedFiles = allFiles.filter(
+      file => !(file.ownerId === currentUserId && file.name === nameToSave)
+    );
+
+    const newFile = {
+      name: nameToSave,
+      ownerId: currentUserId,
+      data: onSave(nameToSave), // הפונקציה מחזירה את תוכן הקובץ
     };
 
-    return (
-    <div className="file-manager">
-        <h3>  שמירה / פתיחת קובץ  </h3>
-        {/* <input
-        type="text"
-        placeholder="שם קובץ"
-        value={fileName}
-        onChange={(e) => setFileName(e.target.value)}
-        /> */}
+    updatedFiles.push(newFile);
+    localStorage.setItem("my_text_editor_files", JSON.stringify(updatedFiles));
 
-        <div className="file-buttons">
+    // עדכון הרשימה המקומית
+    setSavedFiles(updatedFiles.filter(file => file.ownerId === currentUserId));
+  };
+
+  // טעינה
+  const handleLoad = () => {
+    const file = savedFiles.find(f => f.name === fileName);
+    if (!file) {
+      alert("הקובץ לא נמצא");
+      return;
+    }
+    onLoad(file.data);
+  };
+
+  return (
+    <div className="file-manager">
+      <h3>שמירה / פתיחת קובץ</h3>
+
+      <div className="file-buttons">
         <button onClick={handleSave}>💾 שמור</button>
         <button onClick={handleLoad}>📂 פתח</button>
-        </div>
+      </div>
 
-        {savedFiles.length > 0 && (
+      {savedFiles.length > 0 && (
         <div className="saved-files">
-            <label>בחר קובץ קיים:</label>
-            <select onChange={(e) => setFileName(e.target.value)} value={fileName} >
+          <label>בחר קובץ קיים:</label>
+          <select
+            onChange={(e) => setFileName(e.target.value)}
+            value={fileName}
+          >
             <option value="">-- קבצים שמורים --</option>
-            {savedFiles.map((name) => (
-                <option key={name} value={name}>
-                {name}
-                </option>
+            {savedFiles.map((file) => (
+              <option key={file.name} value={file.name}>
+                {file.name}
+              </option>
             ))}
-            </select>
+          </select>
         </div>
-        )}
+      )}
     </div>
-    );
+  );
 }
-    
-    export default TextFileManager;
+
+export default TextFileManager;
