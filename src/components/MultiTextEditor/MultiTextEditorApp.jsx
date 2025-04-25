@@ -1,11 +1,11 @@
 // MultiTextEditorApp.jsx (מבוסס על TextEditorApp + שדרוג לחלק ג׳)
 import React, { useState } from 'react';
-import TextDisplay from "./TextDisplay/TextDisplay";
-import TextStylePanel from "./TextStylePanel/TextStylePanel";
-import VirtualKeyboard from "./Keyboard/VirtualKeyboard";
-import TextActionsPanel from "./TextActionsPanel/TextActionsPanel";
+import TextDisplay from "../TextDisplay/TextDisplay";
+import TextStylePanel from "../TextStylePanel/TextStylePanel";
+import VirtualKeyboard from "../Keyboard/VirtualKeyboard";
+import TextActionsPanel from "../TextActionsPanel/TextActionsPanel";
 import TextFileManager from "./TextFileManager";
-import "./TextEditor.css";
+import "../MultiTextEditor/MultiTextEditorApp.css";
 
 let nextId = 1;
 const firstEditor = createNewEditor("קובץ 1");
@@ -17,10 +17,20 @@ function MultiTextEditorApp({ currentUser, onLogout }) {
   //which one we are editing now 
   const [activeEditorId, setActiveEditorId] = useState(firstEditor.id);
 
+  const [savedFiles, setSavedFiles] = useState([]);
+
+  const [currentStyle, setCurrentStyle] = useState({
+    fontFamily: "Arial",
+    fontSize: "12px",
+    color: "#000000",
+  });
+
+
   // HELPERS
   const updateEditor = (id, updates) => {
     setEditors(prev => prev.map(e => e.id === id ? { ...e, ...updates } : e));
   };
+
 
   // //the active erea is set only when there are editors:
   // React.useEffect(() => {
@@ -74,7 +84,7 @@ function MultiTextEditorApp({ currentUser, onLogout }) {
     if (last && last.end === start && JSON.stringify(last.style) === JSON.stringify(editor.currentStyle)) {
       newSpans[newSpans.length - 1] = { ...last, end };
     } else {
-      newSpans.push({ start, end, style: editor.currentStyle });
+      newSpans.push({ start, end, style: /*editor.*/currentStyle });
     }
     updateEditor(id, { text: editor.text + char, styleSpans: newSpans });
   };
@@ -103,17 +113,23 @@ function MultiTextEditorApp({ currentUser, onLogout }) {
     updateEditor(id, { text: "", styleSpans: [], searchChar: null });
   };
 
+  // const handleStyleChange = (id, key, value) => {
+  //   const editor = editors.find(e => e.id === id);
+  //   const newStyle = { ...editor.currentStyle, [key]: value };
+  //   updateEditor(id, { currentStyle: newStyle });
+  // };
+
   const handleStyleChange = (id, key, value) => {
-    const editor = editors.find(e => e.id === id);
-    const newStyle = { ...editor.currentStyle, [key]: value };
-    updateEditor(id, { currentStyle: newStyle });
+    setCurrentStyle(prev => ({ ...prev, [key]: value }));
   };
+  //________________________________________________________________
+  
 
   const handleApplyAll = (id) => {
     const editor = editors.find(e => e.id === id);
     pushToHistory(id);
     updateEditor(id, {
-      styleSpans: [{ start: 0, end: editor.text.length, style: editor.currentStyle }],
+      styleSpans: [{ start: 0, end: editor.text.length, style: /*editor.*/currentStyle }],
     });
   };
 
@@ -149,44 +165,44 @@ function MultiTextEditorApp({ currentUser, onLogout }) {
     updateEditor(id, { text: updatedText });
   };
 
-  const handleSave = (id, fileName) => {
-    console.log("שמירת קובץ");
-    const editor = editors.find(e => e.id === id);
-    const fileData = { text: editor.text, styleSpans: editor.styleSpans };
+  // const handleSave = (id, fileName) => {
+  //   console.log("שמירת קובץ");
+  //   const editor = editors.find(e => e.id === id);
+  //   const fileData = { text: editor.text, styleSpans: editor.styleSpans };
 
-    const allFiles = JSON.parse(localStorage.getItem("my_text_editor_files") || "[]");
+  //   const allFiles = JSON.parse(localStorage.getItem("my_text_editor_files") || "[]");
 
-    const updatedFiles = allFiles.filter(file =>
-      !(file.ownerId === currentUser.id && file.name === fileName)
-    );
+  //   const updatedFiles = allFiles.filter(file =>
+  //     !(file.ownerId === currentUser.id && file.name === fileName)
+  //   );
 
-    console.log(fileData);
+  //   console.log(fileData);
 
-    updatedFiles.push({
-      name: fileName,
-      ownerId: currentUser.id,
-      data: fileData,
-    });
+  //   updatedFiles.push({
+  //     name: fileName,
+  //     ownerId: currentUser.id,
+  //     data: fileData,
+  //   });
 
-    localStorage.setItem("my_text_editor_files", JSON.stringify(updatedFiles));
-    alert("הקובץ נשמר בהצלחה");
-  };
+  //   localStorage.setItem("my_text_editor_files", JSON.stringify(updatedFiles));
+  //   alert("הקובץ נשמר בהצלחה");
+  // };
 
 
-  const handleLoad = (id, fileName) => {
-    const allFiles = JSON.parse(localStorage.getItem("my_text_editor_files") || "[]");
-    const file = allFiles.find(file => file.ownerId === currentUser.id && file.name === fileName);
+  // const handleLoad = (id, fileName) => {
+  //   const allFiles = JSON.parse(localStorage.getItem("my_text_editor_files") || "[]");
+  //   const file = allFiles.find(file => file.ownerId === currentUser.id && file.name === fileName);
 
-    if (file) {
-      updateEditor(id, {
-        text: file.data.text,
-        styleSpans: file.data.styleSpans || [],
-      });
-      alert("הקובץ נטען בהצלחה");
-    } else {
-      alert("הקובץ לא נמצא או שאינו שייך למשתמש הנוכחי");
-    }
-  };
+  //   if (file) {
+  //     updateEditor(id, {
+  //       text: file.data.text,
+  //       styleSpans: file.data.styleSpans || [],
+  //     });
+  //     alert("הקובץ נטען בהצלחה");
+  //   } else {
+  //     alert("הקובץ לא נמצא או שאינו שייך למשתמש הנוכחי");
+  //   }
+  // };
 
 
   const addNewEditor = () => {
@@ -196,11 +212,12 @@ function MultiTextEditorApp({ currentUser, onLogout }) {
   };
 
   const handleCloseEditor = (id) => {
-    const fileName = prompt("האם לשמור את הקובץ לפני הסגירה? הכנס/י שם קובץ או בטל:");
-    if (fileName === null) return; // ביטול
-    if (fileName.trim() !== "") {
-      handleSave(id, fileName.trim());
-    }
+    const confirmClose = window.confirm(
+      "⚠️ שים לב: אם לא שמרת את הקובץ, הנתונים עלולים להימחק.\n\nהאם אתה בטוח שברצונך לסגור את אזור העריכה?"
+    );
+    
+    if (!confirmClose) return;
+    
 
     setEditors(prev => {
       const filtered = prev.filter(e => e.id !== id);
@@ -257,6 +274,8 @@ function MultiTextEditorApp({ currentUser, onLogout }) {
                 searchChar={editor.searchChar}
               />
               <TextFileManager
+                savedFiles={savedFiles}
+                setSavedFiles={setSavedFiles}
                 currentUserId={currentUser.id}
                 onSave={() => ({
                   text: editor.text,
@@ -296,10 +315,10 @@ function MultiTextEditorApp({ currentUser, onLogout }) {
             />
           </div>
 
-          <TextStylePanel
+          <TextStylePanel className="style-panel"
             onStyleChange={(k, v) => handleStyleChange(activeEditorId, k, v)}
             onApplyAll={() => handleApplyAll(activeEditorId)}
-            currentStyle={editors.find(e => e.id === activeEditorId)?.currentStyle}
+            currentStyle={/*editors.find(e => e.id === activeEditorId)?.*/currentStyle}
           />
         </div>
       )}
@@ -314,11 +333,11 @@ function createNewEditor(name) {
     text: "",
     styleSpans: [],
     searchChar: null,
-    currentStyle: {
-      fontFamily: "Arial",
-      fontSize: "12px",
-      color: "#000000",
-    },
+    // currentStyle: {
+    //   fontFamily: "Arial",
+    //   fontSize: "12px",
+    //   color: "#000000",
+    // },
     history: [],
   };
 }

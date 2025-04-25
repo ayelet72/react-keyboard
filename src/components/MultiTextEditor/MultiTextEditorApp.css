@@ -4,19 +4,6 @@
   height: 100vh;
 }
 
-
-
-.text-display {
-  width: 100%;
-  max-height: 230px;
-  padding: 0.5rem;
-  border-color: #ffffff;
-  overflow-y: auto;
-  overflow-x: hidden;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-}
-
 .editor-area {
   position: fixed;
   bottom: 0;
@@ -28,7 +15,8 @@
   justify-content: center; /* שינוי! מרכז את כל התוכן */
   gap: 1rem;
   padding: 10px 15px;
-  height: 45vh;
+  height: 30vh;
+  /*height: 40vh;*/
   background: rgb(220, 217, 217);
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
   z-index: 100;
@@ -39,7 +27,6 @@
 .style-panel {
   width: 220px; /* קובעים רוחב ברור (אפשר גם באחוזים קטנים) */
 }
-
 
 .keyboard-erea {
   flex: 1;
@@ -59,12 +46,13 @@
   padding: 1rem;    
 }
 
-.page-layout {
+/* .page-layout {
   display: flex;
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
-}
+} */
+
 .editor-container {
   display: flex;
   flex-wrap: wrap;
@@ -98,7 +86,7 @@ h3{
 
 }
 .editor-page{
-  overflow: hidden;
+  /* overflow: hidden; */
   height: auto;
   max-height: 370px;
 }
@@ -125,6 +113,14 @@ h3{
   background-color: #cbcbcb;
 
 }
+
+.add-editor-btn{
+  max-width: 300px;
+  margin: auto;
+}
+
+
+/*עריכת הדר, כפתור ןהצגת שם משתמש*/
 
 .editor-header {
   display: flex;
@@ -154,10 +150,4 @@ h3{
 
 .greeting {
   font-weight: bold;
-}
-
-
-.add-editor-btn{
-  max-width: 300px;
-  margin: auto;
 }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-function TextFileManager({ onSave, onLoad, currentUserId }) {
+function TextFileManager({ onSave, onLoad, currentUserId,savedFiles, setSavedFiles}) {
   const [fileName, setFileName] = useState("");
-  const [savedFiles, setSavedFiles] = useState([]);
+  // const [savedFiles, setSavedFiles] = useState([]);
 
   // טען רק את הקבצים של המשתמש הנוכחי
   useEffect(() => {
@@ -13,7 +13,10 @@ function TextFileManager({ onSave, onLoad, currentUserId }) {
 
   // שמירה
   const handleSave = () => {
+    console.log("תחילת תהליך שמירה");
     let nameToSave = fileName;
+    console.log("שם הקובץ:"+nameToSave);
+
     if (!nameToSave) {
       nameToSave = prompt("הכניסי שם לקובץ:");
       if (!nameToSave) return;
@@ -33,11 +36,14 @@ function TextFileManager({ onSave, onLoad, currentUserId }) {
       data: onSave(nameToSave), // הפונקציה מחזירה את תוכן הקובץ
     };
 
+
     updatedFiles.push(newFile);
     localStorage.setItem("my_text_editor_files", JSON.stringify(updatedFiles));
 
     // עדכון הרשימה המקומית
     setSavedFiles(updatedFiles.filter(file => file.ownerId === currentUserId));
+    console.log("הרשימת קבצים המקומית: ");
+    alert(`'${nameToSave}' נשמר בהצלחה!`);
   };
 
   // טעינה
@@ -47,6 +53,8 @@ function TextFileManager({ onSave, onLoad, currentUserId }) {
       alert("הקובץ לא נמצא");
       return;
     }
+
+    console.log(JSON.stringify(file.data));
     onLoad(file.data);
   };
 

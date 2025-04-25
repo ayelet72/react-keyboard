@@ -1,6 +1,6 @@
 // UserAppManager.jsx
 import React, { useState, useEffect } from "react";
-import MultiTextEditorApp from "./MultiTextEditorApp";
+import MultiTextEditorApp from "../MultiTextEditor/MultiTextEditorApp";
 import LoginForm from "./LoginForm";
 import RegisterForm from "./RegisterForm";
 
