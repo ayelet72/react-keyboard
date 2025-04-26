@@ -19,7 +19,7 @@
 
 .action-raw1 button,.action-raw3 button {
   color: rgb(255, 255, 255);
-  padding: 0.2rem 0.5rem;
+  /* padding: 0.2rem 0.5rem; */
   background-color: #eed200;
   cursor: pointer;
   white-space: nowrap;
@@ -41,7 +41,7 @@
 }
 
 .action-raw2 input {
-  padding: 0.4rem;
+  /* padding: 0.4rem; */
   width: 100%;
   font-size: 1rem;
   border: 1px solid #ccc;
@@ -57,7 +57,7 @@
 
 .action-raw3 input {
   width: 30%;
-  padding: 0.4rem;
+  /* padding: 0.4rem; */
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
